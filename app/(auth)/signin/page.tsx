@@ -45,7 +45,7 @@ export default function Signin() {
     }
 
     if (result?.ok) {
-      router.push('/dashboard')
+      router.push('/')
     }
   }
   return (
@@ -57,7 +57,7 @@ export default function Signin() {
             Welcome back ! Please sign in to Continue
           </CardDescription>
           <div className="grid mt-4">
-            <Button variant="outline" type="submit" onClick={() => signIn('google', { callbackUrl: "/dashboard" })} className="w-full gap-3 flex">
+            <Button variant="outline" type="submit" onClick={() => signIn('google', { callbackUrl: "/" })} className="w-full gap-3 flex">
               Sign in with Google
             </Button>
           </div>

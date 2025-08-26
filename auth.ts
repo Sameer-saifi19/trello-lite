@@ -1,9 +1,10 @@
-import NextAuth, {CredentialsSignin} from "next-auth";
+import NextAuth, { CredentialsSignin } from "next-auth";
 import { prisma } from "./lib/prisma";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import Google from "next-auth/providers/google";
 import Credentials from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
+
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   adapter: PrismaAdapter(prisma),
@@ -21,31 +22,30 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       },
       authorize: async (credentials) => {
         try {
-          
           if (!credentials) return null;
 
           const email = credentials?.email as string | undefined;
-          const password = credentials?.password as string | undefined; 
+          const password = credentials?.password as string | undefined;
 
           if (!email || !password) {
-            throw new CredentialsSignin("please provide both email & password")
-          };
-          
+            throw new CredentialsSignin("please provide both email & password");
+          }
+
           const user = await prisma.user.findUnique({ where: { email } });
 
           if (!user) {
-          throw new Error("Invalid email or password");
-        }
+            throw new Error("Invalid email or password");
+          }
 
-        if (!user.password) {
-          throw new Error("Invalid email or password");
-        }
+          if (!user.password) {
+            throw new Error("Invalid email or password");
+          }
 
           const isValid = await bcrypt.compare(password, user.password);
 
           if (!isValid) {
-            throw new Error("Password did not match")
-          };
+            throw new Error("Password did not match");
+          }
 
           // Return only user object fields you want exposed to the session
           return {
@@ -60,8 +60,23 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       },
     }),
   ],
+  callbacks: {
+  async jwt({ token, user }) {
+    if (user) {
+      token.id = user.id;
+    }
+    return token;
+  },
+  async session({ session, token }) {
+    if (token?.id && session.user) {
+      (session.user as { id?: string }).id = token.id as string;
+    }
+    return session;
+  },
+},
+
   pages: {
-    signIn: "/auth/signin",
+    signIn: "/signin",
   },
   session: {
     strategy: "jwt",
