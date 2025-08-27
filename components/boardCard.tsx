@@ -11,8 +11,13 @@ import {
 } from "./ui/card";
 import { Button } from "./ui/button";
 import CardItems from "./cardItems";
-import { EllipsisVertical } from "lucide-react";
-import { DropdownMenu, DropdownMenuTrigger } from "./ui/dropdown-menu";
+import { Delete, DeleteIcon, EllipsisVertical } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "./ui/dropdown-menu";
 
 type Card = {
   id: string;
@@ -43,7 +48,6 @@ export default function BoardCard() {
     fetchData();
   }, []);
 
-
   return (
     <>
       <div className="flex flex-wrap gap-4">
@@ -51,17 +55,25 @@ export default function BoardCard() {
           <Card key={card.id} className="w-72">
             <CardHeader>
               <CardTitle>{card.name}</CardTitle>
-              <CardAction> 
-                
-                
-
-                 </CardAction>
+              <CardAction>
+                <DropdownMenu >
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="ghost">
+                      <EllipsisVertical />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                    <DropdownMenuItem>Edit</DropdownMenuItem>
+                    <DropdownMenuItem variant="destructive">Delete </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </CardAction>
             </CardHeader>
             <CardContent>
               <CardItems />
             </CardContent>
-            <CardFooter >
-                <Button className="w-full">Add a card</Button>
+            <CardFooter>
+              <Button className="w-full">Add a card</Button>
             </CardFooter>
           </Card>
         ))}
