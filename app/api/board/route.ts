@@ -1,4 +1,3 @@
-import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -49,6 +48,8 @@ export async function GET() {
       where: {
         userId: session.user?.id,
       },
+      orderBy:{
+        createdAt: "asc"      }
     });
 
     if (result.length === 0) {
