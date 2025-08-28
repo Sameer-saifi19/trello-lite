@@ -1,12 +1,12 @@
+import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
-  const session = {
-    user: {
-      id: "cmes8qsdo0000hzh45kyo9yrl",
-    },
-  };
+  const session = await auth()
+  if(!session?.user?.email){
+    return NextResponse.json("Unauthenticated", {status: 401})
+  }
 
   try {
     const body = await req.json();
@@ -22,7 +22,7 @@ export async function POST(req: NextRequest) {
     const board = await prisma.board.create({
       data: {
         name,
-        userId: session.user.id,
+        userId: session.user.id as string,
       },
     });
 
@@ -38,18 +38,22 @@ export async function POST(req: NextRequest) {
 
 export async function GET() {
   const session = {
-    user: {
-      id: "cmes8qsdo0000hzh45kyo9yrl",
-    },
-  };
+    user:{
+      id: "cmes8qsdo0000hzh45kyo9yrl"
+    }
+  }
 
   try {
     const result = await prisma.board.findMany({
       where: {
         userId: session.user?.id,
       },
+      include: {
+        tasks: true
+      },
       orderBy:{
-        createdAt: "asc"      }
+        createdAt: "asc"      
+      }
     });
 
     if (result.length === 0) {

@@ -8,11 +8,10 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   try {
-    const session = {
-      user: {
-        id: "cmes8qsdo0000hzh45kyo9yrl",
-      },
-    };
+    const session = await auth();
+    if (!session?.user?.email) {
+      return NextResponse.json("Unauthenticated", { status: 401 });
+    }
 
     const boardId = params.id;
 
@@ -50,11 +49,10 @@ export async function PUT(
   { params }: { params: { id: string } }
 ) {
   try {
-    const session = {
-      user: {
-        id: "cmes8qsdo0000hzh45kyo9yrl", // 🔑 Replace with await auth() later
-      },
-    };
+    const session = await auth();
+    if (!session?.user?.email) {
+      return NextResponse.json("Unauthenticated", { status: 401 });
+    }
 
     const boardId = params.id;
 
@@ -74,7 +72,6 @@ export async function PUT(
     const existingBoard = await prisma.board.findFirst({
       where: { id: boardId },
     });
-
 
     if (!existingBoard) {
       return NextResponse.json({ error: "Board not found" }, { status: 404 });
@@ -100,18 +97,15 @@ export async function PUT(
   }
 }
 
-
 export async function DELETE(
   req: Request,
   { params }: { params: { id: string } }
 ) {
   try {
-    const session = {
-      user: {
-        id: "cmes8qsdo0000hzh45kyo9yrl", // 🔑 Replace with await auth() later
-      },
-    };
-
+    const session = await auth();
+    if (!session?.user?.email) {
+      return NextResponse.json("Unauthenticated", { status: 401 });
+    }
     const boardId = params.id;
 
     if (!boardId) {
