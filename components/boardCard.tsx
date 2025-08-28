@@ -143,7 +143,7 @@ export default function BoardCard() {
               </CardAction>
             </CardHeader>
             <CardContent>
-              <CardItems tasks={card.tasks} />
+              <CardItems tasks={card.tasks} boardId={""} />
             </CardContent>
             <CardFooter>
               <AddTaskDialog id={card.id}/> 

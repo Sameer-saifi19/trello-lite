@@ -15,13 +15,21 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useState } from "react";
 
+type TaskType = {
+  id: string;
+  title: string;
+  description?: string | null;
+};
+
 export function AddTaskDialog({ id }: { id: string }) {
   const [open, setOpen] = useState(false);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [loading, setLoading] = useState(false);
+  const [editingTask, setEditingTask] = useState<TaskType | null>(null);
 
   async function createTask(e: React.FormEvent) {
+    
     e.preventDefault();
     setLoading(true);
 
@@ -48,6 +56,28 @@ export function AddTaskDialog({ id }: { id: string }) {
       setLoading(false);
     }
   }
+
+  async function submitEdit() {
+    if (!editingTask) return;
+
+    try {
+      const res = await fetch(`/api/tasks/${editingTask.id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ title, description }),
+      });
+
+      if (!res.ok) throw new Error("Failed to update task");
+
+      setOpen(false);
+      window.location.reload();
+    } catch (error) {
+      console.error("Error while updating task", error);
+      alert("Error updating task");
+    }
+  }
+
+  
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -90,7 +120,7 @@ export function AddTaskDialog({ id }: { id: string }) {
             <DialogClose asChild>
               <Button variant="outline">Cancel</Button>
             </DialogClose>
-            <Button disabled={loading} type="submit">
+            <Button disabled={loading} onClick={submitEdit}>
               {loading ? "Creating..." : "Save Task"}
             </Button>
           </DialogFooter>
