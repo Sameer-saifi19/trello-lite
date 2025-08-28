@@ -7,7 +7,7 @@ export default function DropDown(){
     return <>
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
-                <Button ><EllipsisVertical/> hello</Button>
+                <Button ><EllipsisVertical/></Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
                 <DropdownMenuItem>Edit</DropdownMenuItem>

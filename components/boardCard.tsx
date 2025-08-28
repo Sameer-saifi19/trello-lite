@@ -29,12 +29,21 @@ import {
 } from "./ui/dialog";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
+import { AddTaskDialog } from "./addTaskDialog";
 
 type CardType = {
   id: string;
   name: string;
   createdAt: Date;
+  tasks: TaskType[]
 };
+
+type TaskType = {
+  id: string,
+  title: string,
+  description?: string,
+  createdAt: Date
+}
 
 export default function BoardCard() {
   const [cards, setCards] = useState<CardType[]>([]);
@@ -45,8 +54,9 @@ export default function BoardCard() {
   const [editingCard, setEditingCard] = useState<CardType | null>(null);
   const [newName, setNewName] = useState("");
 
+  
   useEffect(() => {
-    async function fetchData() {
+     async function fetchData() {
       try {
         const res = await fetch(`/api/board`);
         if (!res.ok) throw new Error("Failed to fetch data");
@@ -133,10 +143,10 @@ export default function BoardCard() {
               </CardAction>
             </CardHeader>
             <CardContent>
-              <CardItems />
+              <CardItems tasks={card.tasks} />
             </CardContent>
             <CardFooter>
-              <Button className="w-full">Add a card</Button>
+              <AddTaskDialog id={card.id}/> 
             </CardFooter>
           </Card>
         ))}
