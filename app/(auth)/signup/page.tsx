@@ -17,8 +17,8 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { motion, AnimatePresence } from 'framer-motion';
 import { signupAction } from "@/actions/user"
 import { useState } from "react"
-import { useRouter } from "next/navigation"
-import { signIn } from "next-auth/react"
+import { redirect, useRouter } from "next/navigation"
+import { signIn, useSession } from "next-auth/react"
 
 export default function Signup() {
     const { register, handleSubmit, formState: { errors, isSubmitting, isValid } } = useForm<signupSchema>({
@@ -45,6 +45,12 @@ export default function Signup() {
             setSuccess(null)
         }
     }
+
+    const {data:session, status} = useSession();
+    
+      if(session){
+        redirect('/dashboard')
+      }
 
     return (
         <div className={cn("flex flex-col gap-6")}>

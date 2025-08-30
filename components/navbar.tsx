@@ -16,7 +16,7 @@ import { useTheme } from "next-themes";
 import Link from "next/link";
 import Image from "next/image";
 import { auth } from "@/auth";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import { AddCardDialog } from "./addCardDialog";
 
 export default function Navbar() {
@@ -63,16 +63,7 @@ export default function Navbar() {
                     <DropdownMenuContent sideOffset={12}>
                         <DropdownMenuLabel>My Account</DropdownMenuLabel>
                         <DropdownMenuSeparator />
-                        <DropdownMenuItem asChild>
-                            <Link href="/admin/dashboard/profile" className="flex items-center gap-2">
-                                <User />
-                                My Profile
-                            </Link>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem>
-                            <Settings /> Settings
-                        </DropdownMenuItem>
-                        <DropdownMenuItem variant="destructive">
+                        <DropdownMenuItem variant="destructive" onClick={() => signOut()}>
                             {" "}
                             <LogOut /> Logout
                         </DropdownMenuItem>
