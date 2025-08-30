@@ -59,13 +59,13 @@ export function AddCardDialog() {
           <DialogHeader>
             <DialogTitle>Edit profile</DialogTitle>
             <DialogDescription>
-              Make changes to your profile here. Click save when you&apos;re
+              Add new card here. Click save when you&apos;re
               done.
             </DialogDescription>
           </DialogHeader>
           <div className="grid gap-4">
             <div className="grid gap-3">
-              <Label htmlFor="name-1">Name</Label>
+              <Label htmlFor="name-1" className="pt-4">Name</Label>
               <Input
                 id="name"
                 onChange={(e) => setName(e.target.value)}
@@ -74,7 +74,7 @@ export function AddCardDialog() {
               />
             </div>
           </div>
-          <DialogFooter>
+          <DialogFooter className="pt-8">
             <DialogClose asChild>
               <Button variant="outline">Cancel</Button>
             </DialogClose>

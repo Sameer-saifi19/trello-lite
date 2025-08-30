@@ -35,15 +35,15 @@ type CardType = {
   id: string;
   name: string;
   createdAt: Date;
-  tasks: TaskType[]
+  tasks: TaskType[];
 };
 
 type TaskType = {
-  id: string,
-  title: string,
-  description?: string,
-  createdAt: Date
-}
+  id: string;
+  title: string;
+  description?: string;
+  createdAt: Date;
+};
 
 export default function BoardCard() {
   const [cards, setCards] = useState<CardType[]>([]);
@@ -54,9 +54,8 @@ export default function BoardCard() {
   const [editingCard, setEditingCard] = useState<CardType | null>(null);
   const [newName, setNewName] = useState("");
 
-  
   useEffect(() => {
-     async function fetchData() {
+    async function fetchData() {
       try {
         const res = await fetch(`/api/board`);
         if (!res.ok) throw new Error("Failed to fetch data");
@@ -118,7 +117,7 @@ export default function BoardCard() {
     <>
       <div className="flex flex-wrap gap-4">
         {cards.map((card) => (
-          <Card key={card.id} className="w-72">
+          <Card key={card.id} className="w-72 ">
             <CardHeader className="flex justify-between items-center">
               <CardTitle>{card.name}</CardTitle>
               <CardAction>
@@ -146,7 +145,7 @@ export default function BoardCard() {
               <CardItems tasks={card.tasks} boardId={""} />
             </CardContent>
             <CardFooter>
-              <AddTaskDialog id={card.id}/> 
+              <AddTaskDialog id={card.id} />
             </CardFooter>
           </Card>
         ))}

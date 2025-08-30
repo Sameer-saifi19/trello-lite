@@ -82,7 +82,7 @@ export function AddTaskDialog({ id }: { id: string }) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="w-full">Add a card</Button>
+        <Button className="w-full">Add Task</Button>
       </DialogTrigger>
 
       <DialogContent className="sm:max-w-[425px]">
@@ -96,7 +96,7 @@ export function AddTaskDialog({ id }: { id: string }) {
 
           <div className="grid gap-4">
             <div className="grid gap-2">
-              <Label htmlFor="title">Title</Label>
+              <Label htmlFor="title" className="pt-4">Title</Label>
               <Input
                 id="title"
                 onChange={(e) => setTitle(e.target.value)}
@@ -106,7 +106,7 @@ export function AddTaskDialog({ id }: { id: string }) {
             </div>
 
             <div className="grid gap-2">
-              <Label htmlFor="description">Description</Label>
+              <Label htmlFor="description" className="pt-4">Description</Label>
               <Input
                 id="description"
                 onChange={(e) => setDescription(e.target.value)}
@@ -116,7 +116,7 @@ export function AddTaskDialog({ id }: { id: string }) {
             </div>
           </div>
 
-          <DialogFooter>
+          <DialogFooter className="pt-8">
             <DialogClose asChild>
               <Button variant="outline">Cancel</Button>
             </DialogClose>

@@ -1,7 +1,5 @@
 'use client'
 
-
-import { AddCardDialog } from "@/components/addCardDialog";
 import BoardCard from "@/components/boardCard";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
@@ -22,9 +20,8 @@ export default function Dashboard() {
   }
   return (
     <>
+      <div className="flex p-8">
       <BoardCard />
-      <div className="w-72">
-        <AddCardDialog />
       </div>
     </>
   );
