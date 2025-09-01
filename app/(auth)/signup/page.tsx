@@ -40,13 +40,13 @@ export default function Signup() {
                 setSuccess("User created Successfully")
                 router.push('/signin')
             }
-        } catch (error: any) {
-            console.error(error.message || "Something went wrong")
+        } catch (error: unknown) {
+            console.error(error || "Something went wrong")
             setSuccess(null)
         }
     }
 
-    const {data:session, status} = useSession();
+    const {data:session} = useSession();
     
       if(session){
         redirect('/dashboard')

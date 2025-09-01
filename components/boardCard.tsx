@@ -25,7 +25,6 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "./ui/dialog";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
@@ -61,8 +60,12 @@ export default function BoardCard() {
         if (!res.ok) throw new Error("Failed to fetch data");
         const json = await res.json();
         setCards(json);
-      } catch (error: any) {
-        setError(error.message);
+      } catch (error : unknown) {
+        if (error instanceof Error) {
+          setError(error.message);
+        } else {
+          setError(String(error));
+        }
       } finally {
         setLoading(false);
       }
@@ -115,9 +118,18 @@ export default function BoardCard() {
 
   return (
     <>
+    {loading ? (
+      <div className="w-full flex justify-center items-center py-10">
+        <p>Loading boards...</p>
+      </div>
+    ) : error ? (
+      <div className="w-full flex justify-center items-center py-10 text-red-500">
+        <p>Error: {error}</p>
+      </div>
+    ) : (
       <div className="flex flex-wrap gap-4">
         {cards.map((card) => (
-          <Card key={card.id} className="w-72 ">
+          <Card key={card.id} className="w-72">
             <CardHeader className="flex justify-between items-center">
               <CardTitle>{card.name}</CardTitle>
               <CardAction>
@@ -142,7 +154,7 @@ export default function BoardCard() {
               </CardAction>
             </CardHeader>
             <CardContent>
-              <CardItems tasks={card.tasks} boardId={""} />
+              <CardItems tasks={card.tasks} boardId={card.id} />
             </CardContent>
             <CardFooter>
               <AddTaskDialog id={card.id} />
@@ -150,29 +162,30 @@ export default function BoardCard() {
           </Card>
         ))}
       </div>
+    )}
 
-      {/* Edit Dialog */}
-      <Dialog open={editOpen} onOpenChange={setEditOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Edit Board</DialogTitle>
-            <DialogDescription>
-              Update the name of your board below.
-            </DialogDescription>
-          </DialogHeader>
-          <div className="grid gap-4 py-2">
-            <Label htmlFor="name">Name</Label>
-            <Input
-              id="name"
-              value={newName}
-              onChange={(e) => setNewName(e.target.value)}
-            />
-          </div>
-          <DialogFooter>
-            <Button onClick={submitEdit}>Save changes</Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-    </>
+    {/* Edit Dialog */}
+    <Dialog open={editOpen} onOpenChange={setEditOpen}>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Edit Board</DialogTitle>
+          <DialogDescription>
+            Update the name of your board below.
+          </DialogDescription>
+        </DialogHeader>
+        <div className="grid gap-4 py-2">
+          <Label htmlFor="name">Name</Label>
+          <Input
+            id="name"
+            value={newName}
+            onChange={(e) => setNewName(e.target.value)}
+          />
+        </div>
+        <DialogFooter>
+          <Button onClick={submitEdit}>Save changes</Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  </>
   );
 }

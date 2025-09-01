@@ -17,7 +17,6 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export function AddCardDialog() {
-  const router = useRouter()
   const [open, setOpen] = useState(false);
   const [name, setName] = useState("");
   const [loading, setLoading] = useState(false);
@@ -36,7 +35,6 @@ export function AddCardDialog() {
       if (!res.ok) {
         throw new Error("Failed to create board");
       }
-      const data = await res.json();
       setName("");
       setOpen(false)
       window.location.reload( )

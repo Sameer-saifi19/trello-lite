@@ -1,6 +1,5 @@
 import { prisma } from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
-import { experimental_taintUniqueValue } from "react";
 
 export async function DELETE(
   req: NextRequest,

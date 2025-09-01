@@ -26,7 +26,7 @@ export function AddTaskDialog({ id }: { id: string }) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [loading, setLoading] = useState(false);
-  const [editingTask, setEditingTask] = useState<TaskType | null>(null);
+  const [editingTask] = useState<TaskType | null>(null);
 
   async function createTask(e: React.FormEvent) {
     
